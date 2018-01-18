@@ -40,7 +40,8 @@ namespace Model
     eu_west_2,
     ap_northeast_2,
     ca_central_1,
-    us_east_2
+    us_east_2,
+    exo_ch_dk2
   };
 
 namespace BucketLocationConstraintMapper

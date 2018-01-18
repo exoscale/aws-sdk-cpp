@@ -125,6 +125,7 @@ namespace
             // Create a client
             ClientConfiguration config;
             config.region = Aws::Region::US_EAST_1;
+            config.endpointOverride = "ppsos-ch-dk-2.exo.io";
             config.scheme = Scheme::HTTPS;
             config.connectTimeoutMs = 30000;
             config.requestTimeoutMs = 30000;
@@ -143,6 +144,7 @@ namespace
                     Aws::MakeShared<DefaultAWSCredentialsProviderChain>(ALLOCATION_TAG), config, 
                         AWSAuthV4Signer::PayloadSigningPolicy::Never /*signPayloads*/, true /*useVirtualAddressing*/);
             config.region = Aws::Region::US_WEST_2;
+            config.endpointOverride = "ppsos-ch-dk-2.exo.io";
             config.useDualStack = true;
             oregonClient = Aws::MakeShared<S3Client>(ALLOCATION_TAG, 
                     Aws::MakeShared<DefaultAWSCredentialsProviderChain>(ALLOCATION_TAG), config, 
@@ -463,7 +465,7 @@ namespace
         CreateBucketRequest createBucketRequest;
         createBucketRequest.SetBucket(fullBucketName);
         CreateBucketConfiguration bucketConfiguration;
-        bucketConfiguration.SetLocationConstraint(BucketLocationConstraint::us_west_2);
+        bucketConfiguration.SetLocationConstraint(BucketLocationConstraint::exo_ch_dk2);
         createBucketRequest.SetCreateBucketConfiguration(bucketConfiguration);
 
         CreateBucketOutcome createBucketOutcome = oregonClient->CreateBucket(createBucketRequest);
@@ -476,7 +478,7 @@ namespace
         locationRequest.SetBucket(fullBucketName);
         auto locationOutcome = oregonClient->GetBucketLocation(locationRequest);
         ASSERT_TRUE(locationOutcome.IsSuccess());
-        ASSERT_EQ(locationOutcome.GetResult().GetLocationConstraint(), BucketLocationConstraint::us_west_2);
+        ASSERT_EQ(locationOutcome.GetResult().GetLocationConstraint(), BucketLocationConstraint::exo_ch_dk2);
 
         DeleteBucketRequest deleteBucketRequest;
         deleteBucketRequest.SetBucket(fullBucketName);
@@ -1001,7 +1003,7 @@ namespace
         ASSERT_TRUE(putObjectOutcome.IsSuccess());
 
         Aws::String presignedUrlPut = Client->GeneratePresignedUrl(fullBucketName, TEST_DNS_UNFRIENDLY_OBJ_KEY, HttpMethod::HTTP_PUT);
-        ASSERT_EQ(0ul, presignedUrlPut.find("https://s3.amazonaws.com/" + fullBucketName + "/" + TEST_DNS_UNFRIENDLY_OBJ_KEY));
+        ASSERT_EQ(0ul, presignedUrlPut.find("https://ppsos-ch-dk-2.exo.io/" + fullBucketName + "/" + TEST_DNS_UNFRIENDLY_OBJ_KEY));
     }
 }
 
