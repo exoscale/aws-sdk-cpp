@@ -143,7 +143,7 @@ namespace
             Client = Aws::MakeShared<S3Client>(ALLOCATION_TAG, 
                     Aws::MakeShared<DefaultAWSCredentialsProviderChain>(ALLOCATION_TAG), config, 
                         AWSAuthV4Signer::PayloadSigningPolicy::Never /*signPayloads*/, true /*useVirtualAddressing*/);
-            config.region = Aws::Region::US_WEST_2;
+            config.region = "ch-dk-2";//Aws::Region::US_WEST_2;
             config.endpointOverride = "ppsos-ch-dk-2.exo.io";
             config.useDualStack = true;
             oregonClient = Aws::MakeShared<S3Client>(ALLOCATION_TAG, 
